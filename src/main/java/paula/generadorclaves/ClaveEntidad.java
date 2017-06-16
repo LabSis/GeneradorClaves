@@ -16,27 +16,22 @@ import javax.persistence.Table;
 @Table(name= "keys_size_1", schema = "keys_MD5@cassandra_pu")
 public class ClaveEntidad {
     public ClaveEntidad(){}
-    @Id
-    private String idClave;
     
+   
+    @Id
     @Column(name="keys_1")
     private String keys_1;
     
     @Column(name="hash")
     private String hash;
     
-    public void setID(String idClave){
-        this.idClave = idClave;
-    }
     public void setClave(String keys_1){
         this.keys_1 = keys_1;
     }
     public void setHash(String hash){
         this.hash = hash;
     }
-    public String getID(){
-        return idClave;
-    }
+ 
     public String getClave(){
         return keys_1;
     }
