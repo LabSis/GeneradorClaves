@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package paula.generadorclaves;
+package Lógica;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -15,16 +15,18 @@ import java.util.Map;
  * @author paula
  */
 public class Claves {
-    private String clave;
+   
     private String hash;
-    private ArrayList<String> listadoClaves;
-    private Map<String, String> hashPorClave;
+    private final ArrayList<String> listadoClaves;
+    private final Map<String, String> hashPorClave;
+    private final Map<String, Integer> colisiones;
     
-    public Claves(){
-        clave = "";
-        hash = "";
+    public Claves(){ 
+       
+        hash = null;
         listadoClaves = new ArrayList<>();
         hashPorClave = new HashMap<>();
+        colisiones = new HashMap<>();
     }
     public ArrayList<String> getListadoClaves(){
         return listadoClaves;
@@ -32,11 +34,15 @@ public class Claves {
     public Map<String, String> getHashPorClave(){
         return hashPorClave;
     }
+    public Map<String, Integer> getColisiones(){
+        return colisiones;
+    }
     
     /*A partir de aquí los métodos necesarios para generar las claves, y sus respectivos hashes*/
     
     /*  
         Método para generar contraseñas, utilizando técnica de Variación sin repeticiones
+    
         @param alfabeto: caracteres a partir de los cuales voy a generar mi contraseña
         @param longitud: longitud de la contraseña
         @param aux: 
@@ -46,7 +52,7 @@ public class Claves {
     public void variacion(String[] alfabeto, String act, int longitud, int longitudAlfabeto) {
         longitudAlfabeto = alfabeto.length;       
         if (longitud == 0) {
-           listadoClaves.add(act);
+           listadoClaves.add(act); //agrego la clave a mi listado de claves
             
         } else {
             for (int i = 0; i < longitudAlfabeto; i++) {
@@ -56,15 +62,16 @@ public class Claves {
         }
     }
      /*
-        Método que genera un hash de una determinada contraseña
+        Método que genera un hash de una determinada clave
+    
         @param algoritmo: MD5, SHA-1, SHA-256, SHA-384, SHA-512
-        @param contraseña: contraseña de la cual quiero obtener el valor de hash
+        @param clave: clave de la cual quiero obtener el valor de hash
      
      */
-    public String generarHash(String algoritmo, String contraseña){
+    private String generarHash(String algoritmo, String clave){
     try {
         
-        byte bytesContraseña[] = contraseña.getBytes();
+        byte bytesContraseña[] = clave.getBytes();
         
         MessageDigest messageDigest = MessageDigest.getInstance(algoritmo);
         byte[] array = messageDigest.digest(bytesContraseña);
@@ -89,19 +96,33 @@ public class Claves {
     }
     /*
         Método que retorna un Hash Map que contiene los valores de las contraseñas y sus respectivos hashes
-        HashMap<key, value>: <clave, hash> (para que admita valores duplicados de hash, en caso de haberlos)
+    
+        @return hashPorClave:  <clave, hash> (para que admita valores duplicados de hash, en caso de haberlos)
     */
-    public Map<String, String> hashParaCadaClave(){
+    public Map<String, String> hashParaCadaClave(String algoritmo){
        
+       String clave;
        int size = listadoClaves.size();
-
+       int repeticiones = 1;
+       
        for (int i = 0; i < size; i++) {
         clave = listadoClaves.get(i);
-        hash = generarHash("MD5", clave);
-
+        hash = generarHash(algoritmo, clave);
         hashPorClave.put(clave, hash);
+        
+        /*al mismo tiempo que genero la dupla hash-clave verifico la existencia de colisiones,
+        y en caso de que existan, la cantidad de veces que ese hash se repite.
+        */
+           if (!colisiones.containsKey(hash)) {
+              colisiones.put(hash, repeticiones);
+           }
+           else{
+               repeticiones++;
+               colisiones.put(hash, repeticiones);
+           }
+         
        }
-      
+       listadoClaves.clear();
        return hashPorClave;
     }
     
