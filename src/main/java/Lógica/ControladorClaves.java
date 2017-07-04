@@ -22,7 +22,7 @@ public class ControladorClaves {
     private final Claves claves;
     private Map<String, String> hashParaCadaClave;
     
-    
+    //este constructor DEBIERA utilizarse una sola vez, cuando se genere la bd de claves
     public ControladorClaves(int longitudClave, String algoritmo){
         auxiliar = "|1234567890’¿qwertyuiop'+asdfghjklñ{}<zxcvbnm,.-°!”#$%&/()=?¡\"*[]>;:_¬\\~^`@QWERTYUIOPASDFGHJKLÑZXCVBNM ";
         alfabeto = auxiliar.split("");
@@ -38,13 +38,8 @@ public class ControladorClaves {
         hashParaCadaClave = claves.hashParaCadaClave(algoritmo); //este es el hashmap que tendría que guardar
         return hashParaCadaClave;
     }
-  
-    public int getLongitudClave(){
-        return longitudClave;
-    }
+
     public String getAlgoritmoUsado(){
         return algoritmo;
-    }
-    
-    
+    } 
 }

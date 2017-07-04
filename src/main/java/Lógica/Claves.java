@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -20,6 +21,7 @@ public class Claves {
     private final ArrayList<String> listadoClaves;
     private final Map<String, String> hashPorClave;
     private final Map<String, Integer> colisiones;
+    private LinkedList<String> pila = new LinkedList<>();
     
     public Claves(){ 
        
@@ -34,10 +36,7 @@ public class Claves {
     public Map<String, String> getHashPorClave(){
         return hashPorClave;
     }
-    public Map<String, Integer> getColisiones(){
-        return colisiones;
-    }
-    
+   
     /*A partir de aquí los métodos necesarios para generar las claves, y sus respectivos hashes*/
     
     /*  
@@ -49,22 +48,25 @@ public class Claves {
         @param longitudAlfabeto: longitud del alfabeto con el cual estoy trabajando
     
     */
+    
     public void variacion(String[] alfabeto, String act, int longitud, int longitudAlfabeto) {
-        longitudAlfabeto = alfabeto.length;       
-        if (longitud == 0) {
-           listadoClaves.add(act); //agrego la clave a mi listado de claves
-            
-        } else {
-            for (int i = 0; i < longitudAlfabeto; i++) {
-                
+        longitudAlfabeto = alfabeto.length;  
+        
+        if (longitud != 0){
+           for (int i = 0; i < longitudAlfabeto; i++) {
+               
+               
                 variacion(alfabeto, act + alfabeto[i], longitud - 1, longitudAlfabeto);
+//               
             }
+        } else {
+              listadoClaves.add(act); //agrego la clave a mi listado de claves
         }
     }
      /*
         Método que genera un hash de una determinada clave
     
-        @param algoritmo: MD5, SHA-1, SHA-256, SHA-384, SHA-512
+        @param algoritmo: MD5, SHA-1, SHA 224, SHA-256, SHA-384, SHA-512
         @param clave: clave de la cual quiero obtener el valor de hash
      
      */
@@ -113,15 +115,17 @@ public class Claves {
         /*al mismo tiempo que genero la dupla hash-clave verifico la existencia de colisiones,
         y en caso de que existan, la cantidad de veces que ese hash se repite.
         */
-           if (!colisiones.containsKey(hash)) {
-              colisiones.put(hash, repeticiones);
+           if (hashPorClave.containsKey(hash)) {
+              if(!colisiones.containsKey(hash)){
+                  
+                    colisiones.put(hash, repeticiones);
+              }
+              else{
+                  repeticiones++;
+                  colisiones.put(hash, repeticiones);
+              }
            }
-           else{
-               repeticiones++;
-               colisiones.put(hash, repeticiones);
-           }
-         
-       }
+        }
        listadoClaves.clear();
        return hashPorClave;
     }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--configuración de runtime para aumentar la capacidad de la memoria de JVM
+   generación de log para Garbage Collector (por si las dudas) #no olvidar configurar la ruta para que sea más general --><actions>
+        <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Xmx3072m                                                                   -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/paula/Desktop/gc.log -classpath %classpath Main</exec.args>
+                <exec.executable>java</exec.executable>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Xmx3072m                                                                   -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/paula/Desktop/gc.log -classpath %classpath Main</exec.args>
+                <exec.executable>java</exec.executable>
+                <jpda.listen>true</jpda.listen>
+            </properties>
+        </action>
+        <action>
+            <actionName>profile</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Xmx3072m                                                                   -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/paula/Desktop/gc.log -classpath %classpath Main</exec.args>
+                <exec.executable>java</exec.executable>
+            </properties>
+        </action>
+    </actions>

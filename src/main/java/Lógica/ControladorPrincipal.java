@@ -12,26 +12,27 @@ import java.util.Map;
  */
 public class ControladorPrincipal {
   private final Persistencia persistencia;  
-  private final ControladorClaves controladorClaves;
+  private ControladorClaves controladorClaves;
+  
+  public ControladorPrincipal(){
+      persistencia = new Persistencia("localhost", 9042);
+  }
   
   public ControladorPrincipal(int longitudClave, String algoritmo){
       persistencia = new Persistencia("localhost", 9042);
       controladorClaves = new ControladorClaves(longitudClave, algoritmo); 
-      
   }
   public void guardarClaves(){
       Map<String, String> hashParaCadaClave = controladorClaves.generarClaves();
       
-      StringBuilder tabla = new StringBuilder();
-      tabla.append("keys_size_");
-      tabla.append(controladorClaves.getLongitudClave());
       StringBuilder keyspace = new StringBuilder();
       keyspace.append("keys_");
       keyspace.append(controladorClaves.getAlgoritmoUsado());
+      
+      String tabla = "minor_keys";
      
       try{
-        persistencia.initConsulta(keyspace.toString(), tabla.toString());
-      
+        persistencia.initInsert(keyspace.toString(), tabla);
         hashParaCadaClave.entrySet().forEach((entry) -> {
             String clave = entry.getKey();
             String hash = entry.getValue();
@@ -43,6 +44,18 @@ public class ControladorPrincipal {
       }
       catch(Exception e){
           System.out.println("ERROR: " + e.getLocalizedMessage());
+      }
+      finally{
+          persistencia.cerrarConexion();
+      }
+  }
+  public void reverseHash(String keyspace, String hash){
+      try{
+          persistencia.initSelect(keyspace);
+          persistencia.reverseHash(hash);
+      }
+      catch(Exception e){
+          System.out.println("Error: " + e.getLocalizedMessage());
       }
       finally{
           persistencia.cerrarConexion();
