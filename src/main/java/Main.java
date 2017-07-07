@@ -13,7 +13,31 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String args[]){
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
+        do{
+            System.out.println("Opciones: ");
+            System.out.println("1 - Generación de claves");
+            System.out.println("2 - Obtener Hash inverso");
+            System.out.println("3 - Salir");
+            
+            opcion = scanner.nextInt();
+            switch(opcion){
+                case 1: 
+                    guardarClaves();
+                    break;
+                case 2: 
+                    hashInverso();
+                    break;
+                case 3:
+                    System.out.println("Saliendo...");
+                    break;
+                default:
+                    System.out.println("Opción inválida.");
+                    break;
+            }
         
+        }while(opcion!=3);
     }
     public static void guardarClaves(){
         Scanner scanner = new Scanner(System.in);
@@ -79,7 +103,7 @@ public class Main {
                     System.out.println("Opción incorrecta");
                     break;
             }
-        }while(true);  
+        }while(opcion!=7);  
         
 
     }
@@ -131,11 +155,14 @@ public class Main {
                     hash = scanner.next();
                     controlador.reverseHash("SHA512", hash);
                     break;
+                case 7:
+                    System.out.println("Saliendo...");
+                    break;
                 default:
                     System.out.println("Opción incorrecta.");
                     break;
             }       
-        }while(true);  
+        }while(opcion!=7);  
     }
         
     

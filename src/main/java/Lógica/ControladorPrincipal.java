@@ -95,7 +95,8 @@ public class ControladorPrincipal {
           persistencia.reverseHash(hash);
       }
       catch(Exception e){
-          System.out.println("Error: " + e.getLocalizedMessage());
+          System.out.println("No se encontró coincidencia con la actual base de datos");
+          //System.out.println("ERROR: " + null);
       }
       finally{
           persistencia.cerrarConexion();
