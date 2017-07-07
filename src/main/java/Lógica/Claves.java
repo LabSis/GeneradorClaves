@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 package Lógica;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -21,7 +21,6 @@ public class Claves {
     private final ArrayList<String> listadoClaves;
     private final Map<String, String> hashPorClave;
     private final Map<String, Integer> colisiones;
-    private LinkedList<String> pila = new LinkedList<>();
     
     public Claves(){ 
        
@@ -112,8 +111,9 @@ public class Claves {
         hash = generarHash(algoritmo, clave);
         hashPorClave.put(clave, hash);
         
-        /*al mismo tiempo que genero la dupla hash-clave verifico la existencia de colisiones,
-        y en caso de que existan, la cantidad de veces que ese hash se repite.
+        /*
+            al mismo tiempo que genero la dupla hash-clave verifico la existencia de colisiones,
+            y en caso de que existan, la cantidad de veces que ese hash se repite.
         */
            if (hashPorClave.containsKey(hash)) {
               if(!colisiones.containsKey(hash)){
@@ -130,5 +130,5 @@ public class Claves {
        return hashPorClave;
     }
     
-   
+       
 }

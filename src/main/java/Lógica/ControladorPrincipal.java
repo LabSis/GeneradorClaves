@@ -5,6 +5,10 @@
  */
 package Lógica;
 import Persistencia.Persistencia;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 /**
  *
@@ -43,6 +47,42 @@ public class ControladorPrincipal {
           
       }
       catch(Exception e){
+          System.out.println("ERROR: " + e.getLocalizedMessage());
+      }
+      finally{
+          persistencia.cerrarConexion();
+      }
+  }
+  public void guardarClavesArchivo(){
+      File archivoClaves = controladorClaves.generarArchivo();
+      String algoritmo = controladorClaves.getAlgoritmoUsado();
+      BufferedReader br;
+      FileReader fr;
+      String clave;
+      String hash;
+
+      StringBuilder keyspace = new StringBuilder();
+      keyspace.append("keys_");
+      keyspace.append(controladorClaves.getAlgoritmoUsado());
+
+      String tabla = "minor_keys";
+     
+      try{
+        persistencia.initInsert(keyspace.toString(), tabla);
+        fr = new FileReader(archivoClaves);
+        br = new BufferedReader(fr);
+        clave = br.readLine();
+        
+        while(clave!=null){
+            hash = controladorClaves.generarHash(algoritmo, clave);
+            persistencia.guardarClaves(clave, hash);
+            clave = br.readLine();
+        }
+
+          System.out.println("EL PROCESO SE HA COMPLETADO DE MANERA CORRECTA");
+          
+      }
+      catch(IOException e){
           System.out.println("ERROR: " + e.getLocalizedMessage());
       }
       finally{

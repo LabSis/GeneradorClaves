@@ -5,6 +5,7 @@
  */
 package Lógica;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -20,7 +21,9 @@ public class ControladorClaves {
     private final String algoritmo;
     
     private final Claves claves;
+    private final ClavesArchivo clavesArchivo;
     private Map<String, String> hashParaCadaClave;
+
     
     //este constructor DEBIERA utilizarse una sola vez, cuando se genere la bd de claves
     public ControladorClaves(int longitudClave, String algoritmo){
@@ -31,14 +34,29 @@ public class ControladorClaves {
         this.algoritmo = algoritmo;
         
         claves = new Claves();
+        clavesArchivo = new ClavesArchivo();
     }
+    /*
+        @deprecado
+        @return Map que contiene duplas hash-clave
+    */
     public Map<String, String> generarClaves(){
         claves.variacion(alfabeto, "" , longitudClave, longitudAlfabeto);
        
         hashParaCadaClave = claves.hashParaCadaClave(algoritmo); //este es el hashmap que tendría que guardar
         return hashParaCadaClave;
     }
-
+    /*
+        @return el archivo que contiene todas las claves posibles
+    
+    */
+    public File generarArchivo(){
+        clavesArchivo.generarCombinaciones(auxiliar.toCharArray(), longitudClave);
+        return clavesArchivo.getFile();
+    }
+    public String generarHash(String algoritmo, String clave){
+        return clavesArchivo.generarHash(algoritmo, clave);
+    }
     public String getAlgoritmoUsado(){
         return algoritmo;
     } 
