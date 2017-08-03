@@ -5,14 +5,13 @@
  */
 
 import Lógica.ControladorPrincipal;
-import Lógica.*;
 /**
  *
  * @author paula
  */
 public class Main {
     public static void main(String args[]){
-        
+
         //args[0] = acción a realizar
         //<run> para hacer una búsqueda
         //<load> para cargar datos
@@ -32,7 +31,7 @@ public class Main {
             guardarClaves(args);
            }
            else{
-               System.out.println("argumento inválido");
+               //error de argumentos
            }
         }
     }

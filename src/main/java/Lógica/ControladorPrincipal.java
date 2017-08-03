@@ -26,6 +26,9 @@ public class ControladorPrincipal {
       controladorClaves = new ControladorClaves(longitudClave, algoritmo); 
   }
   
+  /*
+    tengo que reutilizar este método para guardar todo tiempo de claves y no solamente las menores de 5
+  */
   public void guardarClavesArchivo(){
       File archivoClaves = controladorClaves.generarArchivo();
       String algoritmo = controladorClaves.getAlgoritmoUsado();

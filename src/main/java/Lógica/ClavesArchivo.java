@@ -48,30 +48,25 @@ public class ClavesArchivo {
                 buffer.append(caracter);
                 contraseña = buffer.toString();
                
-                    if(indice == longitud - 1){
-                    combinaciones.add(contraseña);
-                    buffer.setLength(buffer.length() - 1);
-                    contador++;
- 
-//                    if (longitud<=4) {
-//                        combinaciones.add(contraseña);
-//                        buffer.setLength(buffer.length() - 1);
-//                        contador++;
-//                    }
-//                    else{
-//                       if(t.esTopologiaComun(contraseña){}
-//                        
-//                        
-//                    }
-                if(contador % 100000 == 0){
+                    if(indice == longitud - 1 ){
+                        if (t.esTopologiaComun(contraseña)) {
+                              combinaciones.add(contraseña);
+                              contador++;
+                        }
+                   
+                     buffer.setLength(buffer.length() - 1);
+                  
+                      if(contador % 100000 == 0){
                         // Cada 100000 generadas escribo en disco
                         escribir(combinaciones);
                         combinaciones.clear();
+                                               
+                        }
+ 
+                    } else {
+                        indicesAlfabeto[indice]++;
+                        break;
                     }
-                } else {
-                    indicesAlfabeto[indice]++;
-                    break;
-                }
                 
                 
 
@@ -106,6 +101,7 @@ public class ClavesArchivo {
         {
             lista.forEach((l) -> {
                 out.println(l);
+
             });
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -143,5 +139,16 @@ public class ClavesArchivo {
             return exception.toString();
         }
     }
- 
+    /*
+        Algoritmo de reducción utilizado para crear la RT
+    */
+    public void reduccion(){
+    
+    }
+    /*
+      Generar RT  
+    */
+    public void generarRT(){
+
+}
 }

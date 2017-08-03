@@ -20,8 +20,7 @@ public class ControladorClaves {
      
     //este constructor DEBIERA utilizarse una sola vez, cuando se genere la bd de claves
     public ControladorClaves(int longitudClave, String algoritmo){
-        //alfabeto = "|1234567890’¿qwertyuiop'+asdfghjklñ{}<zxcvbnm,.-°!”#$%&/()=?¡\"*[]>;:_¬\\~^`@QWERTYUIOPASDFGHJKLÑZXCVBNM ";
-        alfabeto = "0123456789";
+        alfabeto = "1234567890|’¿qwertyuiop'+asdfghjklñ{}<zxcvbnm,.-°!”#$%&/()=?¡\"*[]>;:_¬\\~^`@QWERTYUIOPASDFGHJKLÑZXCVBNM ";
         this.longitudClave = longitudClave;
         this.algoritmo = algoritmo;
         
