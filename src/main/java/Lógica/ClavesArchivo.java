@@ -5,10 +5,8 @@
  */
 package Lógica;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,38 +21,50 @@ import java.util.List;
  */
 public class ClavesArchivo {
     private static File archivoClaves;
-    private static File archivoHashes;
-    private String hash;
-    
+    private static Topologías t;   
     
     public ClavesArchivo(){
         archivoClaves = new File("claves.txt");
-        archivoHashes = new File("hashes.txt");
-        hash = null;
-        
+        t = new Topologías();
     }
     public File getFile(){
         return archivoClaves;
     }
+    /*
+        @param alfabeto: charset a utilizar
+        @param longitud: longitud de la clave
+    */
     public  void generarCombinaciones(char[] alfabeto, int longitud){
         List<String> combinaciones = new LinkedList<>();
         int indice = 0;
         int contador = 0;
         
         StringBuilder buffer = new StringBuilder();
-        
+        String contraseña;
         int indicesAlfabeto[] = new int[longitud];
         while(indice < longitud){
             for(int i = indicesAlfabeto[indice]; i < alfabeto.length; i++, indicesAlfabeto[indice]++){
                 char caracter = alfabeto[i];
                 buffer.append(caracter);
-                if(indice == longitud - 1){
-                    combinaciones.add(buffer.toString());
+                contraseña = buffer.toString();
+               
+                    if(indice == longitud - 1){
+                    combinaciones.add(contraseña);
                     buffer.setLength(buffer.length() - 1);
                     contador++;
-
-                    if(contador % 100000 == 0){
-                        // Cada 100000 generadas podríamos ir escribiendo en algún lado.
+ 
+//                    if (longitud<=4) {
+//                        combinaciones.add(contraseña);
+//                        buffer.setLength(buffer.length() - 1);
+//                        contador++;
+//                    }
+//                    else{
+//                       if(t.esTopologiaComun(contraseña){}
+//                        
+//                        
+//                    }
+                if(contador % 100000 == 0){
+                        // Cada 100000 generadas escribo en disco
                         escribir(combinaciones);
                         combinaciones.clear();
                     }
@@ -62,6 +72,9 @@ public class ClavesArchivo {
                     indicesAlfabeto[indice]++;
                     break;
                 }
+                
+                
+
             }
             // A la salida de este for tenemos 3 posibilidades.
             if(indice < longitud - 1 && indicesAlfabeto[indice] < alfabeto.length){
@@ -99,32 +112,6 @@ public class ClavesArchivo {
         }
     }
     /*
-        Método para generar un archivo que contenga todos los hashes de mis claves...
-    */
-    public void generarArchivosHashes(String algoritmo){
-       
-       String clave;
-       try(FileWriter fw = new FileWriter(archivoHashes, true); 
-           BufferedWriter bw = new BufferedWriter(fw);
-           PrintWriter out = new PrintWriter(bw))    
-       {
-           FileReader fr = new FileReader(archivoClaves);
-           BufferedReader br = new BufferedReader(fr);
-           clave = br.readLine();
-           
-           while(clave!=null){
-            
-                hash = generarHash(algoritmo, clave);
-                out.println(hash);
-                
-                clave = br.readLine();
-            }
-       }
-       catch(Exception e){
-           System.out.println("Error en la generación del archivo de Hashes: " + e.getLocalizedMessage());
-       }
-    }
-    /*
         Método que genera un hash de una determinada clave
     
         @param algoritmo: MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512
@@ -150,9 +137,8 @@ public class ClavesArchivo {
 
         catch (NoSuchAlgorithmException e) {
             StringBuilder exception = new StringBuilder();
-            exception.append("El algoritmo seleccionado es ");
-            exception.append(algoritmo);
-            exception.append(", pero es inválido. ");
+            exception.append("Algoritmo inválido ");
+            exception.append(e.getLocalizedMessage());
 
             return exception.toString();
         }

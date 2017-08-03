@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
 /**
  *
  * @author paula
@@ -26,33 +25,7 @@ public class ControladorPrincipal {
       persistencia = new Persistencia("localhost", 9042);
       controladorClaves = new ControladorClaves(longitudClave, algoritmo); 
   }
-  public void guardarClaves(){
-      Map<String, String> hashParaCadaClave = controladorClaves.generarClaves();
-      
-      StringBuilder keyspace = new StringBuilder();
-      keyspace.append("keys_");
-      keyspace.append(controladorClaves.getAlgoritmoUsado());
-      
-      String tabla = "minor_keys";
-     
-      try{
-        persistencia.initInsert(keyspace.toString(), tabla);
-        hashParaCadaClave.entrySet().forEach((entry) -> {
-            String clave = entry.getKey();
-            String hash = entry.getValue();
-            persistencia.guardarClaves(clave, hash);
-        
-        });
-          System.out.println("EL PROCESO SE HA COMPLETADO DE MANERA CORRECTA");
-          
-      }
-      catch(Exception e){
-          System.out.println("ERROR: " + e.getLocalizedMessage());
-      }
-      finally{
-          persistencia.cerrarConexion();
-      }
-  }
+  
   public void guardarClavesArchivo(){
       File archivoClaves = controladorClaves.generarArchivo();
       String algoritmo = controladorClaves.getAlgoritmoUsado();
@@ -89,6 +62,10 @@ public class ControladorPrincipal {
           persistencia.cerrarConexion();
       }
   }
+  /*
+    Devuelve una contraseña dado un determinado hash
+    Sirve para claves de longitud menor o igual a cuatro
+  */
   public void reverseHash(String keyspace, String hash){
       try{
           persistencia.initSelect(keyspace);
@@ -96,10 +73,10 @@ public class ControladorPrincipal {
       }
       catch(Exception e){
           System.out.println("No se encontró coincidencia con la actual base de datos");
-          //System.out.println("ERROR: " + null);
       }
       finally{
           persistencia.cerrarConexion();
       }
   }
+
 }

@@ -5,164 +5,48 @@
  */
 
 import Lógica.ControladorPrincipal;
-import java.util.Scanner;
-
+import Lógica.*;
 /**
  *
  * @author paula
  */
 public class Main {
     public static void main(String args[]){
-        Scanner scanner = new Scanner(System.in);
-        int opcion;
-        do{
-            System.out.println("Opciones: ");
-            System.out.println("1 - Generación de claves");
-            System.out.println("2 - Obtener Hash inverso");
-            System.out.println("3 - Salir");
-            
-            opcion = scanner.nextInt();
-            switch(opcion){
-                case 1: 
-                    guardarClaves();
-                    break;
-                case 2: 
-                    hashInverso();
-                    break;
-                case 3:
-                    System.out.println("Saliendo...");
-                    break;
-                default:
-                    System.out.println("Opción inválida.");
-                    break;
-            }
         
-        }while(opcion!=3);
-    }
-    public static void guardarClaves(){
-        Scanner scanner = new Scanner(System.in);
-        int opcion;       
+        //args[0] = acción a realizar
+        //<run> para hacer una búsqueda
+        //<load> para cargar datos
        
-        do{
-            System.out.println("Opciones: ");
-            System.out.println("1-Generar claves para MD5");
-            System.out.println("2-Generar claves para SHA1");
-            System.out.println("3-Generar claves para SHA224");
-            System.out.println("4-Generar claves para SHA256");
-            System.out.println("5-Generar claves para SHA384");
-            System.out.println("6-Generar claves para SHA512");
-            System.out.println("7-SALIR");
-            
-          
-            opcion = scanner.nextInt();
-            int longitud;
-            ControladorPrincipal controlador;
-           
-            switch(opcion){
-                case 1:
-                     System.out.print("Seleccionar longitud claves a generar: ");
-                    longitud = scanner.nextInt();
-                    controlador = new ControladorPrincipal(longitud, "MD5");
-                    controlador.guardarClaves();
-                    break;
-                case 2:
-                    System.out.print("Seleccionar longitud claves a generar: ");
-                    longitud = scanner.nextInt();
-                    controlador = new ControladorPrincipal(longitud, "SHA1");
-                    controlador.guardarClaves();
-                    break;
-                case 3:
-                    System.out.print("Seleccionar longitud claves a generar: ");
-                    longitud = scanner.nextInt();
-                    controlador = new ControladorPrincipal(longitud, "SHA224");
-                    controlador.guardarClaves();
-                    break;
-                case 4:
-                    System.out.print("Seleccionar longitud claves a generar: ");
-                    longitud = scanner.nextInt();
-                    controlador = new ControladorPrincipal(longitud, "SHA256");
-                    controlador.guardarClaves();
-                    break;    
-                case 5:
-                    System.out.print("Seleccionar longitud claves a generar: ");
-                    longitud = scanner.nextInt();
-                    controlador = new ControladorPrincipal(longitud, "SHA384");
-                    controlador.guardarClaves();
-                    break;
-                case 6:
-                    System.out.print("Seleccionar longitud claves a generar: ");
-                    longitud = scanner.nextInt();
-                    controlador = new ControladorPrincipal(longitud, "SHA512");
-                    controlador.guardarClaves();
-                    break;
-                case 7:
-                    System.out.println("Saliendo...");
-                    break;
+        //agregar validaciones para verificar que se ingresen los argumentos correctos.
+        if (args[0].compareTo("run") == 0){
+             //args[1] = tipo de hash
+            //args[2] = hash a crackear
                 
-                default:
-                    System.out.println("Opción incorrecta");
-                    break;
-            }
-        }while(opcion!=7);  
-        
-
+            hashInverso(args);
+        }
+        else{
+           if(args[0].compareTo("load") == 0){
+            //carga masiva
+            //args[1] = longitud clave
+            //args[2] = tipo de hash
+            guardarClaves(args);
+           }
+           else{
+               System.out.println("argumento inválido");
+           }
+        }
     }
-    public static void hashInverso(){
-        
-        Scanner scanner = new Scanner(System.in);
-        int opcion;
+    public static void guardarClaves(String args[]){
+        ControladorPrincipal controlador;
+        //longitud clave, tipo de hash a generar
+        controlador = new ControladorPrincipal(Integer.parseInt(args[1]), args[2]);
+        //genera todas las claves con sus respectivos hash, según una longitud deseada y un tipo de hash determinado.
+        controlador.guardarClavesArchivo();
+    }
+    public static void hashInverso(String args[]){
         ControladorPrincipal controlador = new ControladorPrincipal();
-        String hash; 
-        do{
-            System.out.println("Opciones: ");
-            System.out.println("1-Hash Inverso para MD5");
-            System.out.println("2-Hash Inverso para SHA1");
-            System.out.println("3-Hash Inverso para SHA224");
-            System.out.println("4-Hash Inverso para SHA256");
-            System.out.println("5-Hash Inverso para SHA384");
-            System.out.println("6-Hash Inverso para SHA512");
-            System.out.println("7-Salir");
-            
-            opcion = scanner.nextInt();
-            switch(opcion){
-                case 1:
-                    System.out.println("Ingrese hash para obtener su inverso: ");
-                    hash = scanner.next();
-                    controlador.reverseHash("MD5", hash);
-                    break;
-                case 2:
-                    System.out.println("Ingrese hash para obtener su inverso: ");
-                    hash = scanner.next();
-                    controlador.reverseHash("SHA1", hash);
-                    break;
-                case 3:
-                    System.out.println("Ingrese hash para obtener su inverso: ");
-                    hash = scanner.next();
-                    controlador.reverseHash("SHA224", hash);
-                    break;
-                case 4:
-                    System.out.println("Ingrese hash para obtener su inverso: ");
-                    hash = scanner.next();
-                    controlador.reverseHash("SHA256", hash);
-                    break;
-                case 5:
-                    System.out.println("Ingrese hash para obtener su inverso: ");
-                    hash = scanner.next();
-                    controlador.reverseHash("SHA384", hash);
-                    break;
-                case 6:
-                    System.out.println("Ingrese hash para obtener su inverso: ");
-                    hash = scanner.next();
-                    controlador.reverseHash("SHA512", hash);
-                    break;
-                case 7:
-                    System.out.println("Saliendo...");
-                    break;
-                default:
-                    System.out.println("Opción incorrecta.");
-                    break;
-            }       
-        }while(opcion!=7);  
+        //tipo de hash, hash a crackear
+        controlador.reverseHash(args[1], args[2]);
     }
         
     
