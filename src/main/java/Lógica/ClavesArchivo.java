@@ -12,8 +12,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -49,10 +53,12 @@ public class ClavesArchivo {
                 contraseña = buffer.toString();
                
                     if(indice == longitud - 1 ){
-                        if (t.esTopologiaComun(contraseña)) {
-                              combinaciones.add(contraseña);
-                              contador++;
-                        }
+//                        if (t.esTopologiaComun(contraseña)) {
+//                              combinaciones.add(contraseña);
+//                              contador++;
+//                        }
+                     combinaciones.add(contraseña);
+                     contador++;
                    
                      buffer.setLength(buffer.length() - 1);
                   
@@ -61,15 +67,12 @@ public class ClavesArchivo {
                         escribir(combinaciones);
                         combinaciones.clear();
                                                
-                        }
+                      }
  
                     } else {
                         indicesAlfabeto[indice]++;
                         break;
                     }
-                
-                
-
             }
             // A la salida de este for tenemos 3 posibilidades.
             if(indice < longitud - 1 && indicesAlfabeto[indice] < alfabeto.length){
@@ -142,13 +145,78 @@ public class ClavesArchivo {
     /*
         Algoritmo de reducción utilizado para crear la RT
     */
-    public void reduccion(){
-    
+    public String reduccion(String hash){
+       return limpiarHash(hash).substring(0,4);
+    }
+    /*
+        tomar el hash y devolver sólo sus digitos
+    */
+    public String limpiarHash(String hash){
+        Pattern pattern = Pattern.compile("[^0-9]");
+        Matcher match = pattern.matcher(hash);
+        
+        if (match.find()) {
+            return match.replaceAll("");
+        }
+        return null;
     }
     /*
       Generar RT  
     */
-    public void generarRT(){
-
-}
+    public String[] generarRT(String algoritmo, String clave){
+        String [] palabrasExtremas = new String[2];
+        String palabra;
+        
+        palabrasExtremas[0] = clave;
+        
+        String hash = generarHash(algoritmo, clave);
+        //genero la primera reducción
+        palabra = reduccion(hash);
+        
+        for (int i = 0; i < 10000; i++) {
+            hash = generarHash(algoritmo, palabra);
+            palabra = reduccion(hash);
+        }
+        
+        palabrasExtremas[1] = palabra;
+        
+        return palabrasExtremas;
+    }
+    /*
+        arraylist para encontrar la primera coincidencia de palabra final
+    */
+    public ArrayList procesoInverso(String hashACrackear, String algoritmo){
+        String palabra = reduccion(hashACrackear);
+        String hashAux;
+        
+        ArrayList<String> palabras = new ArrayList<>();
+        palabras.add(palabra);
+        for (int i = 0; i < 10000; i++) {
+            hashAux = generarHash(algoritmo, palabra);
+            palabra = reduccion(hashAux);
+            palabras.add(palabra);
+            
+        }
+        return palabras;
+    }
+    
+     public HashMap encontrarHash(String algoritmo, String palabraFinal){
+        
+        HashMap<String, String> duplas= new HashMap<>();
+        String palabra;
+        String hash = generarHash(algoritmo, palabraFinal);
+        
+        //genero la primera reducción
+        palabra = reduccion(hash);
+        duplas.put(hash, palabra);
+      
+        for (int i = 0; i < 10000; i++) {
+            duplas.put(hash, palabra);
+            hash = generarHash(algoritmo, palabra);
+            palabra = reduccion(hash);
+        }
+        return duplas;
+      }
+        
+    
 }

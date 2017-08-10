@@ -58,23 +58,66 @@ public class Persistencia {
         statement = select.toString();
         return statement;
     }
+    /*this is just a trial, dont judge*/
+    public String initSelectBis(){
+        StringBuilder select = new StringBuilder();
+        select.append("SELECT * FROM pruebas.pruebas WHERE key = ?");
+        select.append("ALLOW FILTERING");
+        
+        statement = select.toString();
+        return statement;
+    }
     /*
         @param hash: valor de hash al cual le quiero buscar una coincidencia
     */
     public String reverseHash(String hash){
-        String key;
-       
+        String key = "";
+
+        try{
             ResultSet rs = SESSION.execute(statement, hash);
             Row row = rs.one();
             if (row.getString("key") != null) {
                  key = row.getString("key");
             }
-            else{
-                key = "No se encuentra#";
-            }
-        System.out.println("clave encontrada: " + key);
+        }
+        catch(Exception e){
+            System.out.println("Error en la búsqueda: " + e.getLocalizedMessage());
+        }
+            
         return key;
     }
+    public String yanose(String primeraCoincidencia){
+        String coincidencia;
+        try{
+            ResultSet rs = SESSION.execute(statement, primeraCoincidencia);
+            Row row = rs.one();
+            if (row.getString("hash") != null) {
+               return row.getString("hash");
+            }
+        }
+        catch(Exception e){
+            System.out.println("ya no se que error poneeeer");
+        }
+        return null;
+    }
+    
+    public boolean existeCoincidencia(String palabra){
+        boolean flag = false;
+       
+        try{
+             ResultSet rs = SESSION.execute(statement, palabra);
+             Row row = rs.one();
+             if (row.getString("hash")!=null) {
+                flag = true;
+                
+             }
+        }
+        catch(Exception e){
+//            System.out.println("no hay coincidencias");
+        }
+        return flag;
+    }
+    
     public void cerrarConexion(){
         CONNECTOR.close();
     }
