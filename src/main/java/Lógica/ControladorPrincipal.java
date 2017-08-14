@@ -112,19 +112,22 @@ public class ControladorPrincipal {
   /*
     Devuelve una contraseña dado un determinado hash
     Sirve para claves de longitud menor o igual a cuatro
+    Como controlo la longitud???
   */
-  public void reverseHash(String keyspace, String hash){
+  public String reverseHash(String keyspace, String hash){
       try{
           persistencia.initSelect(keyspace);
-          persistencia.reverseHash(hash);
+          return persistencia.reverseHash(hash);
       }
       catch(Exception e){
           System.out.println("No se encontró coincidencia con la actual base de datos");
+          //este null no se tiene que ver !!!
+          return null;
       }
       finally{
           persistencia.cerrarConexion();
       }
-  }
+ }
   public void procesoInverso(String algoritmo, String hashACrackear){
       String palabraEncontrada;
       HashMap<String, String> dupla ;

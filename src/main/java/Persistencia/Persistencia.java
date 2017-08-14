@@ -39,8 +39,7 @@ public class Persistencia {
         statement = insert.toString();
     }
     public void guardarClaves(String clave, String hash){
-       
-        SESSION.execute(statement, clave, hash);
+       SESSION.execute(statement, clave, hash);
     }
     /*
         @param keyspace: nombre correspondiente al keyspace que se está trabajando... tener en cuenta que tengo
@@ -58,7 +57,9 @@ public class Persistencia {
         statement = select.toString();
         return statement;
     }
-    /*this is just a trial, dont judge*/
+    /*
+        trial
+    */
     public String initSelectBis(){
         StringBuilder select = new StringBuilder();
         select.append("SELECT * FROM pruebas.pruebas WHERE key = ?");
@@ -72,22 +73,21 @@ public class Persistencia {
     */
     public String reverseHash(String hash){
         String key = "";
-
         try{
             ResultSet rs = SESSION.execute(statement, hash);
             Row row = rs.one();
             if (row.getString("key") != null) {
                  key = row.getString("key");
+                 System.out.println("La clave es: " + key);
             }
         }
         catch(Exception e){
-            System.out.println("Error en la búsqueda: " + e.getLocalizedMessage());
+            //System.out.println("Error en la búsqueda: " + e.getLocalizedMessage());
+            System.out.println("Error en la búsqueda.");
         }
-            
         return key;
     }
     public String yanose(String primeraCoincidencia){
-        String coincidencia;
         try{
             ResultSet rs = SESSION.execute(statement, primeraCoincidencia);
             Row row = rs.one();

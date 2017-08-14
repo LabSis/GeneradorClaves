@@ -15,25 +15,28 @@ public class Main {
         //args[0] = acción a realizar
         //<run> para hacer una búsqueda
         //<load> para cargar datos
-       
-        //agregar validaciones para verificar que se ingresen los argumentos correctos.
-        if (args[0].compareTo("run") == 0){
-             //args[1] = tipo de hash
-            //args[2] = hash a crackear
-                
-            hashInverso(args);
+       try{
+            if (args[0].compareTo("run") == 0){
+                //búsqueda hashes
+                //args[1] = tipo de hash
+                //args[2] = hash a crackear
+                hashInverso(args);
+            }
+            else{
+               if(args[0].compareTo("load") == 0){
+                //carga masiva
+                //args[1] = longitud clave
+                //args[2] = tipo de hash
+                guardarClaves(args);
+               }
+               else{
+                   //error de argumentos
+               }
+            }}
+        catch(Exception e){
+            System.out.println("Error de argumentos. ");
         }
-        else{
-           if(args[0].compareTo("load") == 0){
-            //carga masiva
-            //args[1] = longitud clave
-            //args[2] = tipo de hash
-            guardarClaves(args);
-           }
-           else{
-               //error de argumentos
-           }
-        }
+        
     }
 
     public static void guardarClaves(String args[]) {
@@ -48,7 +51,6 @@ public class Main {
         ControladorPrincipal controlador = new ControladorPrincipal();
         //tipo de hash, hash a crackear
         controlador.reverseHash(args[1], args[2]);
+       
     }
-    
-
 }
