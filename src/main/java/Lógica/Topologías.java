@@ -5,7 +5,6 @@
  */
 package Lógica;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -61,11 +60,13 @@ public class Topologías {
     private static final String PRUEBA = "^([0-9]+)$";
     
     public boolean esTopologiaComun(String contraseña){
-        Pattern pattern = Pattern.compile(PRUEBA);
-        Matcher match; 
-        match = pattern.matcher(contraseña);
-            
-       return match.find();
+       
+        Pattern p1 = Pattern.compile(TOPOLOGIA_1);
+        Pattern p2 = Pattern.compile(TOPOLOGIA_2);
+        Pattern p3 = Pattern.compile(TOPOLOGIA_3);
+        Pattern p4 = Pattern.compile(TOPOLOGIA_4);
+
+        return p1.matcher(contraseña).find() || p2.matcher(contraseña).find() || p3.matcher(contraseña).find();
    
     }
 }

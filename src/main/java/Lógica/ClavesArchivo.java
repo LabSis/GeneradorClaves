@@ -53,12 +53,17 @@ public class ClavesArchivo {
                 contraseña = buffer.toString();
                
                     if(indice == longitud - 1 ){
-//                        if (t.esTopologiaComun(contraseña)) {
-//                              combinaciones.add(contraseña);
-//                              contador++;
-//                        }
-                     combinaciones.add(contraseña);
-                     contador++;
+                        if (longitud<=4) {
+                            combinaciones.add(contraseña);
+                            contador++;
+                        }
+                        else{
+                              if (t.esTopologiaComun(contraseña)) {
+                                  combinaciones.add(contraseña);
+                                  contador++;
+                        }
+                        }
+
                    
                      buffer.setLength(buffer.length() - 1);
                   
@@ -145,8 +150,19 @@ public class ClavesArchivo {
     /*
         Algoritmo de reducción utilizado para crear la RT
     */
-    public String reduccion(String hash){
+    public String reduccionDePrueba(String hash){
        return limpiarHash(hash).substring(0,4);
+    }
+    public void reduccionPosta(String hash){
+        int random = (int) (Math.random() * 1000); //este random va a ser la clave
+        char[] ascii = hash.toCharArray(); //valor ascii del hash
+        StringBuilder arghh = new StringBuilder();
+        
+        for (char ch:ascii) {
+            System.out.print((int) ch);
+            arghh.append((int) ch ^ random);
+        }
+    
     }
     /*
         tomar el hash y devolver sólo sus digitos
@@ -171,11 +187,11 @@ public class ClavesArchivo {
         
         String hash = generarHash(algoritmo, clave);
         //genero la primera reducción
-        palabra = reduccion(hash);
+        palabra = reduccionDePrueba(hash);
         
         for (int i = 0; i < 10000; i++) {
             hash = generarHash(algoritmo, palabra);
-            palabra = reduccion(hash);
+            palabra = reduccionDePrueba(hash);
         }
         
         palabrasExtremas[1] = palabra;
@@ -186,14 +202,14 @@ public class ClavesArchivo {
         arraylist para encontrar la primera coincidencia de palabra final
     */
     public ArrayList procesoInverso(String hashACrackear, String algoritmo){
-        String palabra = reduccion(hashACrackear);
+        String palabra = reduccionDePrueba(hashACrackear);
         String hashAux;
         
         ArrayList<String> palabras = new ArrayList<>();
         palabras.add(palabra);
         for (int i = 0; i < 10000; i++) {
             hashAux = generarHash(algoritmo, palabra);
-            palabra = reduccion(hashAux);
+            palabra = reduccionDePrueba(hashAux);
             palabras.add(palabra);
             
         }
@@ -207,13 +223,13 @@ public class ClavesArchivo {
         String hash = generarHash(algoritmo, palabraFinal);
         
         //genero la primera reducción
-        palabra = reduccion(hash);
+        palabra = reduccionDePrueba(hash);
         duplas.put(hash, palabra);
       
         for (int i = 0; i < 10000; i++) {
             duplas.put(hash, palabra);
             hash = generarHash(algoritmo, palabra);
-            palabra = reduccion(hash);
+            palabra = reduccionDePrueba(hash);
         }
         return duplas;
       }

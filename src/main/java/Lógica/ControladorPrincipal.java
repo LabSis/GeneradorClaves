@@ -64,7 +64,7 @@ public class ControladorPrincipal {
           
       }
       catch(IOException e){
-          System.out.println("ERROR: " + e.getLocalizedMessage());
+          System.out.println("__ERROR__");
       }
       finally{
           persistencia.cerrarConexion();
@@ -120,9 +120,9 @@ public class ControladorPrincipal {
           return persistencia.reverseHash(hash);
       }
       catch(Exception e){
-          System.out.println("No se encontró coincidencia con la actual base de datos");
-          //este null no se tiene que ver !!!
-          return null;
+          //System.out.println("No se encontró coincidencia con la actual base de datos");
+          System.out.println("__ERROR__");
+          return "";
       }
       finally{
           persistencia.cerrarConexion();

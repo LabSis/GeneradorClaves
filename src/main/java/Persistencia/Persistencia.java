@@ -83,7 +83,7 @@ public class Persistencia {
         }
         catch(Exception e){
             //System.out.println("Error en la búsqueda: " + e.getLocalizedMessage());
-            System.out.println("Error en la búsqueda.");
+            System.out.println("__ERROR__");
         }
         return key;
     }
@@ -96,7 +96,7 @@ public class Persistencia {
             }
         }
         catch(Exception e){
-            System.out.println("ya no se que error poneeeer");
+            System.out.println("...");
         }
         return null;
     }

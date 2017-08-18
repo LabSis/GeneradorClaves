@@ -43,12 +43,14 @@ public class Main {
                    }
             }}
           else{
-               System.out.println("Ingresar la cantidad correcta de argumentos.");
+               //System.out.println("Ingresar la cantidad correcta de argumentos.");
+               System.out.println("__ERROR__");
            }
            }
             
         catch(NumberFormatException e){
-            System.out.println("Error de argumentos. ");
+            //System.out.println("Error de argumentos. ");
+            System.out.println("__ERROR__");
         }
         
     }
