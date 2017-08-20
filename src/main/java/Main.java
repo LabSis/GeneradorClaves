@@ -20,17 +20,17 @@ public class Main {
     public static void main(String args[]) {
 
        Pattern patronHash = Pattern.compile("^[a-zA-Z0-9]+$");
-       Pattern patronTipoHash = Pattern.compile("^[a-zA-Z]{3}[0-9]{1}$");
+       Pattern patronTipoHash = Pattern.compile("^[a-zA-Z]{2,3}[0-9]$");
        try{
            //compruebo que la cantidad de argumentos ingresados sea válida
            if (args.length==3) {
                if (args[0].compareTo("run") == 0){
-                
+
                    //verifico que el hash contenga caracteres válidos
                    if (patronTipoHash.matcher(args[1]).find() && patronHash.matcher(args[2]).find()) {
                     //verifico que el largo del hash ingresado se encuentre en un rango válido
                     if (args[2].length()>=32 && args[2].length()<=128) {
-                        hashInverso(args);
+                         hashInverso(args);
                     }
                    }
 
