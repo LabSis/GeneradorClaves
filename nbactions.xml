@@ -10,10 +10,6 @@
                 <goal>process-classes</goal>
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
-            <properties>
-                <exec.args>-Xmx3072m                                                                  -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/paula/Desktop/gc.log -classpath %classpath Main run sha1 3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2</exec.args>
-                <exec.executable>java</exec.executable>
-            </properties>
         </action>
         <action>
             <actionName>debug</actionName>
@@ -25,7 +21,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Xmx3072m                                                                  -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/paula/Desktop/gc.log -classpath %classpath Main run sha1 3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2</exec.args>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Xmx3072m                                                                  -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/paula/Desktop/gc.log -classpath %classpath Main</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -39,9 +35,10 @@
                 <goal>process-classes</goal>
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
-            <properties>
-                <exec.args>-Xmx3072m                                                                  -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/paula/Desktop/gc.log -classpath %classpath Main run sha1 3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2</exec.args>
+            <!-- en caso de que sea necesario generar log del garbage collector: 
+                <properties>
+                <exec.args>-Xmx3072m                                                                  -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:<directorio>/gc.log -classpath %classpath Main</exec.args>
                 <exec.executable>java</exec.executable>
-            </properties>
+            </properties>-->
         </action>
     </actions>
