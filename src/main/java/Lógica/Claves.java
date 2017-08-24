@@ -23,11 +23,11 @@ import java.util.regex.Pattern;
  *
  * @author paula
  */
-public class ClavesArchivo {
+public class Claves {
     private static File archivoClaves;
     private static Topologías t;   
     
-    public ClavesArchivo(){
+    public Claves(){
         archivoClaves = new File("claves.txt");
         t = new Topologías();
     }
@@ -147,24 +147,14 @@ public class ClavesArchivo {
             return exception.toString();
         }
     }
+    
     /*
         Algoritmo de reducción utilizado para crear la RT
     */
-    public String reduccionDePrueba(String hash){
+    public String reduccionNumerica(String hash){
        return limpiarHash(hash).substring(0,4);
     }
-    public void reduccionPosta(String hash){
-        int random = (int) (Math.random() * 1000); //este random va a ser la clave
-        char[] ascii = hash.toCharArray(); //valor ascii del hash
-        StringBuilder arghh = new StringBuilder();
-        
-        for (char ch:ascii) {
-            System.out.print((int) ch);
-            arghh.append((int) ch ^ random);
-        }
-    
-    }
-    /*
+     /*
         tomar el hash y devolver sólo sus digitos
     */
     public String limpiarHash(String hash){
@@ -177,62 +167,28 @@ public class ClavesArchivo {
         return null;
     }
     /*
-      Generar RT  
+        @param algoritmo: algoritmo que usaré para generar la RT
+        @param clave: clave sobre la cual voy a generar las duplas
+    
     */
-    public String[] generarRT(String algoritmo, String clave){
+    public String[] generarDuplas(String algoritmo, String clave){
         String [] palabrasExtremas = new String[2];
         String palabra;
         
-        palabrasExtremas[0] = clave;
-        
         String hash = generarHash(algoritmo, clave);
         //genero la primera reducción
-        palabra = reduccionDePrueba(hash);
-        
-        for (int i = 0; i < 10000; i++) {
+        //palabra = reduccionNumerica(hash);
+        palabra = reduccionNumerica(hash);
+        for (int i = 0; i < 100; i++) {
             hash = generarHash(algoritmo, palabra);
-            palabra = reduccionDePrueba(hash);
+            palabra = reduccionNumerica(hash);
+            
         }
-        
+        palabrasExtremas[0] = clave;
         palabrasExtremas[1] = palabra;
         
         return palabrasExtremas;
     }
-    /*
-        arraylist para encontrar la primera coincidencia de palabra final
-    */
-    public ArrayList procesoInverso(String hashACrackear, String algoritmo){
-        String palabra = reduccionDePrueba(hashACrackear);
-        String hashAux;
-        
-        ArrayList<String> palabras = new ArrayList<>();
-        palabras.add(palabra);
-        for (int i = 0; i < 10000; i++) {
-            hashAux = generarHash(algoritmo, palabra);
-            palabra = reduccionDePrueba(hashAux);
-            palabras.add(palabra);
-            
-        }
-        return palabras;
-    }
-    
-     public HashMap encontrarHash(String algoritmo, String palabraFinal){
-        
-        HashMap<String, String> duplas= new HashMap<>();
-        String palabra;
-        String hash = generarHash(algoritmo, palabraFinal);
-        
-        //genero la primera reducción
-        palabra = reduccionDePrueba(hash);
-        duplas.put(hash, palabra);
-      
-        for (int i = 0; i < 10000; i++) {
-            duplas.put(hash, palabra);
-            hash = generarHash(algoritmo, palabra);
-            palabra = reduccionDePrueba(hash);
-        }
-        return duplas;
-      }
-        
+
     
 }

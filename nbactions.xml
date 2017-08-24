@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--configuración de runtime para aumentar la capacidad de la memoria de JVM
-   generación de log para Garbage Collector (por si las dudas) #no olvidar configurar la ruta para que sea más general --><actions>
+<actions>
         <action>
             <actionName>run</actionName>
             <packagings>
@@ -10,6 +9,10 @@
                 <goal>process-classes</goal>
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
+            <properties>
+                <exec.args>-classpath %classpath Main run md5 52ce89b15fab0143572d4b1c2d6f27a5</exec.args>
+                <exec.executable>java</exec.executable>
+            </properties>
         </action>
         <action>
             <actionName>debug</actionName>
@@ -21,7 +24,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Xmx3072m                                                                  -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/paula/Desktop/gc.log -classpath %classpath Main</exec.args>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath Main run md5 52ce89b15fab0143572d4b1c2d6f27a5</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -35,10 +38,9 @@
                 <goal>process-classes</goal>
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
-            <!-- en caso de que sea necesario generar log del garbage collector: 
-                <properties>
-                <exec.args>-Xmx3072m                                                                  -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:<directorio>/gc.log -classpath %classpath Main</exec.args>
+            <properties>
+                <exec.args>-classpath %classpath Main run md5 52ce89b15fab0143572d4b1c2d6f27a5</exec.args>
                 <exec.executable>java</exec.executable>
-            </properties>-->
+            </properties>
         </action>
     </actions>

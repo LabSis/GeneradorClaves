@@ -13,18 +13,22 @@ import java.util.HashMap;
  * @author paula
  */
 public class ControladorClaves {
-    private final String alfabeto;
-    private final int longitudClave;
-    private final String algoritmo;
-    private final ClavesArchivo clavesArchivo;
+    private String alfabeto;
+    private int longitudClave;
+    private String algoritmo;
+    private final Claves clavesArchivo;
      
-   public ControladorClaves(int longitudClave, String algoritmo){
+   public ControladorClaves(){
+       clavesArchivo = new Claves();
+   
+   }
+    public ControladorClaves(int longitudClave, String algoritmo){
         //alfabeto = "1234567890|’¿qwertyuiop'+asdfghjklñ{}<zxcvbnm,.-°!”#$%&/()=?¡\"*[]>;:_¬\\~^`@QWERTYUIOPASDFGHJKLÑZXCVBNM";
-        alfabeto = "0123456789";
+        alfabeto = "0123";
         this.longitudClave = longitudClave;
         this.algoritmo = algoritmo;
         
-        clavesArchivo = new ClavesArchivo();
+        clavesArchivo = new Claves();
     }
     
     public File generarArchivo(){
@@ -40,13 +44,11 @@ public class ControladorClaves {
     public int getLongitudClave(){
         return longitudClave;
     }
-    public String[] generarRT(String algoritmo, String clave){
-        return clavesArchivo.generarRT(algoritmo, clave);
+    public String[] getDuplas(String algoritmo, String clave){
+        return clavesArchivo.generarDuplas(algoritmo, clave);
     }
-    public ArrayList<String> procesoInverso(String hash, String algoritmo){
-        return clavesArchivo.procesoInverso(hash, algoritmo);
+    public String getReduccion(String hash){
+        return clavesArchivo.reduccionNumerica(hash);
     }
-    public HashMap encontrarHash(String algoritmo, String palabraFinal){
-        return clavesArchivo.encontrarHash(algoritmo, palabraFinal);
-    }
+
 }

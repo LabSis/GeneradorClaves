@@ -55,6 +55,7 @@ public class Persistencia {
         select.append(" ALLOW FILTERING");
                 
         statement = select.toString();
+        //statement = "SELECT * FROM pruebas.pruebas WHERE hash = ? ALLOW FILTERING";
         return statement;
     }
     /*
@@ -72,7 +73,7 @@ public class Persistencia {
         @param hash: valor de hash al cual le quiero buscar una coincidencia
     */
     public String reverseHash(String hash){
-        String key = "";
+        String key = null;
         try{
             ResultSet rs = SESSION.execute(statement, hash);
             Row row = rs.one();
@@ -83,7 +84,7 @@ public class Persistencia {
         }
         catch(Exception e){
             //System.out.println("Error en la búsqueda: " + e.getLocalizedMessage());
-            System.out.println("__ERROR__");
+            //System.out.println("__ERROR__");
         }
         return key;
     }
