@@ -9,15 +9,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 /**
  *
  * @author paula
  */
 public class ControladorPrincipal {
   private final Persistencia persistencia;  
-  private ControladorClaves controladorClaves;
+  private final ControladorClaves controladorClaves;
   
   public ControladorPrincipal(){
       persistencia = new Persistencia("localhost", 9042);
@@ -51,8 +50,7 @@ public class ControladorPrincipal {
       }
       
       try{
-        persistencia.initInsert("pruebas", "pruebas");
-       // persistencia.initInsert(keyspace.toString(), table.toString());
+        persistencia.initInsert(keyspace.toString(), table.toString());
         fr = new FileReader(archivoClaves);
         br = new BufferedReader(fr);
         clave = br.readLine();
@@ -85,9 +83,9 @@ public class ControladorPrincipal {
     Sirve para claves de longitud menor o igual a cuatro
     Como controlo la longitud???
   */
-  public String reverseHash(String keyspace, String hash){
+  public String reverseHash(String algoritmo, String hash){
       try{
-          persistencia.initSelect(keyspace);
+          persistencia.initSelect(algoritmo);
           return persistencia.reverseHash(hash);
       }
       catch(Exception e){
@@ -95,46 +93,66 @@ public class ControladorPrincipal {
           System.out.println("__ERROR__");
           return "";
       }
-      finally{
-          persistencia.cerrarConexion();
-      }
  }
       
     /*
         @param hash
         método que tiene por objetivo recuperar la clave coincidente con el hash dado
     */
-    public void buscarCoincidencia(String algoritmo, String hash){
-            persistencia.initSelect("pruebas");
-            String palabra = controladorClaves.getReduccion(hash);
-            System.out.println("palabra inicial: " + palabra);
-            String hash_aux;
-            System.out.println("Hash inicial: " + hash);
-            
-            String aux;
-            String aux2;
-            
-            for (int i = 0; i <=100; i++) {
-               //si la palabra reducida no está en la base de datos, sigo recorriendo...
-                if (persistencia.reverseHash(palabra)==null) {
-                   
+    public boolean buscarCoincidencia(String algoritmo, String hash, int longitud){
+        boolean flag = false; //porque todavía no se si hay una coincidencia
+        persistencia.initSelectRT(algoritmo, longitud);
+        
+        String palabra = controladorClaves.getReduccion(hash);
+        String hash_aux;
+        
+        String clave; //vendría a ser la clave
+        String hashEncontrado;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <=100; i++) {
+           //si la palabra reducida está en la base de datos, compruebo si el hash es coincidente
+            if (persistencia.coincidenciaRT(palabra)) {
+              clave = persistencia.reverseHash(palabra);
+              hashEncontrado = controladorClaves.generarHash(algoritmo, clave);
+             
+              if (hashEncontrado.compareTo(hash)==0) {
+                sb.append("Se ha encontrado coincidencia: ");
+                sb.append(clave);
+                sb.append(" - ");
+                sb.append(hashEncontrado);
+                System.out.println(sb.toString());
+                flag = true;
+                break;
+
                 }
-                else{
-                   
-                  aux = persistencia.reverseHash(palabra);
-                  aux2 = controladorClaves.generarHash(algoritmo, aux);
+            }
+               hash_aux = controladorClaves.generarHash(algoritmo, palabra);
+               palabra = controladorClaves.getReduccion(hash_aux);
+         }
+
+        
+        return flag;    
+    }
+    /*recorrer la base de datos para hacer la búsqueda*/
+    public String recorrerBD(String algoritmo, String hash){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 4; i < 13; i++) {
+            
+            if (i<=4) {
+                if (reverseHash(algoritmo, hash) !=null) {
                   
-                  if (aux2.compareTo(hash)==0) {
-                  System.out.println("se ha encontrado coincidencia: " + palabra);
-                  System.out.println(aux + " - " + aux2);
-                  break;                                                                                                                                                
-                    }
+                    sb.append("Se ha encontrado coincidencia: ");
+                    sb.append(reverseHash(algoritmo, hash));
+                    break;
                 }
-                hash_aux = controladorClaves.generarHash(algoritmo, palabra);
-                   palabra = controladorClaves.getReduccion(hash_aux);
-               
-             }
-            System.out.println("proceso finalizado");
-    
+            }
+            
+            if (buscarCoincidencia(algoritmo, hash, i)) {
+                break;
+            }
+        }
+        persistencia.cerrarConexion();
+        return sb.toString();
     }
 }
