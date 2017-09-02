@@ -66,7 +66,7 @@ public class Main {
     public static void hashInverso(String args[]) {
         ControladorPrincipal controlador = new ControladorPrincipal();
         //tipo de hash, hash a crackear
-        controlador.reverseHash(args[1], args[2]);
-        //controlador.buscarCoincidencia(args[1], args[2]);
+        //controlador.reverseHash(args[1], args[2]);
+        controlador.recorrerBD(args[1], args[2]);
     }
 }
