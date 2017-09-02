@@ -6,8 +6,7 @@
 package Lógica;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 /**
  *
  * @author paula
@@ -23,8 +22,7 @@ public class ControladorClaves {
    
    }
     public ControladorClaves(int longitudClave, String algoritmo){
-        //alfabeto = "1234567890|’¿qwertyuiop'+asdfghjklñ{}<zxcvbnm,.-°!”#$%&/()=?¡\"*[]>;:_¬\\~^`@QWERTYUIOPASDFGHJKLÑZXCVBNM";
-        alfabeto = "0123";
+        alfabeto = "1234567890|’¿qwertyuiop'+asdfghjklñ{}<zxcvbnm,.-°!”#$%&/()=?¡\"*[]>;:_¬\\~^`@QWERTYUIOPASDFGHJKLÑZXCVBNM";
         this.longitudClave = longitudClave;
         this.algoritmo = algoritmo;
         
