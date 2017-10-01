@@ -34,10 +34,16 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                    <groupId>SLF4J</groupId>
-                    <artifactId>1.7</artifactId>
-                    <version>1.0</version>
-                    <scope>compile</scope>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.21</version> 
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.21</version>
+                <scope>compile</scope> 
             </dependency>
         </dependencies>
         <build>
