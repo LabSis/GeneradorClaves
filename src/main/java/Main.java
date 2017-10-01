@@ -18,7 +18,7 @@ public class Main {
                args[2]: hash a crackear o longitud de las claves a generar.
     */
     public static void main(String args[]) {
-
+        
        Pattern patronHash = Pattern.compile("^[a-zA-Z0-9]+$");
        Pattern patronTipoHash = Pattern.compile("^[a-zA-Z]{2,3}[0-9]$");
        try{
@@ -37,7 +37,7 @@ public class Main {
             }
                else{
                    if(args[0].compareTo("load") == 0){
-                       if (Integer.parseInt(args[2]) < 12) {
+                       if (Integer.parseInt(args[2]) <= 12) {
                            guardarClaves(args);
                        }
                    }

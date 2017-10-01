@@ -121,11 +121,12 @@ public class Claves {
     
     */
     public String generarHash(String algoritmo, String clave){
+        String algoritmoParseado = parsearAlgoritmo(algoritmo);
         try {
 
             byte bytesContraseña[] = clave.getBytes();
 
-            MessageDigest messageDigest = MessageDigest.getInstance(algoritmo);
+            MessageDigest messageDigest = MessageDigest.getInstance(algoritmoParseado);
             byte[] array = messageDigest.digest(bytesContraseña);
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -144,6 +145,35 @@ public class Claves {
 
             return exception.toString();
         }
+    }
+    //formato necesario para el algoritmo porque si no explota todo
+    
+    public String parsearAlgoritmo(String algoritmo){
+        String algoritmoParseado = "";
+        //faltaría agregar la posibilidad de que se ingrese en minúsculas...
+        switch(algoritmo){
+            case "MD5":
+                algoritmoParseado = "MD5";
+                break;
+            case "SHA1":
+                algoritmoParseado = "SHA1";
+                break;
+            case "SHA224":
+                algoritmoParseado = "SHA-224";
+                break;
+            case "SHA256":
+                algoritmoParseado = "SHA-256";
+                break;
+            case "SHA384":
+                algoritmoParseado = "SHA-384";
+                break;
+            case "SHA512":
+                algoritmoParseado = "SHA-512";
+                break;
+            default:
+                break;
+        }
+        return algoritmoParseado;
     }
     
     /*
