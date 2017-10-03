@@ -67,7 +67,7 @@ public class Persistencia {
             select.append(keyspace);
             select.append(".minor_keys");
             select.append(" WHERE hash = ?");
-            select.append(" ALLOW FILTERING");
+            select.append(" ALLOW FILTERING ; ");
 
             statement = select.toString();
             //statement = "SELECT * FROM pruebas.pruebas WHERE hash = ? ALLOW FILTERING";
@@ -92,7 +92,7 @@ public class Persistencia {
             select.append(".keys_size_");
             select.append(longitud);
             select.append(" WHERE hash = ?");
-            select.append(" ALLOW FILTERING");
+            select.append(" ALLOW FILTERING; ");
 
             statement = select.toString();  
             
@@ -109,18 +109,18 @@ public class Persistencia {
         @param hash: valor de hash al cual le quiero buscar una coincidencia
     */
     public String reverseHash(String hash){
-        String key = null;
+      String key = null;
         try{
             ResultSet rs = SESSION.execute(statement, hash);
             Row row = rs.one();
             if (!row.isNull("key")) {
                  key = row.getString("key");
-                  //System.out.println("La clave es: " + key);
+                 //System.out.println("La clave es: " + key);
             }
         }
         catch(Exception e){
             //System.out.println("Error en la búsqueda: " + e.getLocalizedMessage());
-            //System.out.println("__ERROR__");
+            System.out.println("__ERROR__");
         }
        
         return key;

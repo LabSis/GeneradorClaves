@@ -84,9 +84,12 @@ public class ControladorPrincipal {
     Como controlo la longitud???
   */
   public String reverseHash(String algoritmo, String hash){
+      String clave;
       try{
           persistencia.initSelect(algoritmo);
-          return persistencia.reverseHash(hash);
+          clave = persistencia.reverseHash(hash);
+          return clave;
+         
       }
       catch(Exception e){
           //System.out.println("No se encontró coincidencia con la actual base de datos");
@@ -138,21 +141,22 @@ public class ControladorPrincipal {
     public String recorrerBD(String algoritmo, String hash){
         StringBuilder sb = new StringBuilder();
         for (int i = 4; i < 13; i++) {
-            
+            //Busca si el hash ingresado corresponde a una longitud menor o igual a 4 digitos
             if (i<=4) {
                 if (reverseHash(algoritmo, hash) !=null) {
-                  
                     sb.append("Se ha encontrado coincidencia: ");
                     sb.append(reverseHash(algoritmo, hash));
                     break;
                 }
             }
-            
+            //en caso de que no haya encontrado coincidencia, sigue con el resto de las longitudes
+            //temporal
             if (buscarCoincidencia(algoritmo, hash, i)) {
                 break;
             }
         }
         persistencia.cerrarConexion();
+        System.out.println(sb.toString());
         return sb.toString();
     }
 }
