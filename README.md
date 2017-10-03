@@ -8,7 +8,7 @@ Se une con el proyecto [Hash Cracker](https://github.com/LabSis/labsis_hash_crac
 
 <i>Hashes soportados por esta aplicación: MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512 </i>
 
-## Instrucciones
+## Instrucciones:
         Generación: 
         java -jar GeneradorClaves.jar load [ALGORITMO] [LONGITUD CLAVE]
         
